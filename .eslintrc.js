@@ -13,7 +13,8 @@ module.exports = {
     plugins: ['@typescript-eslint', 'prettier'],
     rules: {
         // custom rules
-        'prettier/prettier': off,
+        'no-console': 'error',
+        'prettier/prettier': 'off',
         '@typescript-eslint/indent': ['error', 4, { VariableDeclarator: 4, SwitchCase: 1 }],
     },
 };

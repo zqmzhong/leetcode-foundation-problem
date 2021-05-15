@@ -1,0 +1,10 @@
+{
+    "*.js": [
+      "prettier .prettierrc.js --write"
+    ],
+    "*.{ts,tsx}": [
+      "npm run lint",
+      "prettier .prettierrc.js --write",
+      "git add"
+    ]
+}
