@@ -8,9 +8,37 @@ export interface ErrorMessage {
 }
 
 export function parseError(err: Error): ErrorMessage {
-  console.log(err);
+  const { message, stack } = err;
+
+  if (!stack) {
+    return {
+      message,
+      stack: []
+    };
+  }
+
+  const stackMatcher = /((http(s)?:\/\/){1}.+\/\w\.js:\d+:\d+)$/gim;
+  const stackInfoMatcher = /(.+\.js):(\d+):(\d+)/;
+
+  const stackIter: IterableIterator<RegExpMatchArray> = stack.matchAll(stackMatcher);
+
+  const stackArr: Array<{
+    line: number
+    column: number
+    filename: string
+  }> = [];
+
+  for (let i of stackIter) {
+    const stackInfo = i[0].match(stackInfoMatcher);
+    stackArr.push({
+      line: Number(stackInfo?.[2]),
+      column: Number(stackInfo?.[3]),
+      filename: String(stackInfo?.[1])
+    });
+  }
+
   return {
-    message: "test",
-    stack: []
+    message,
+    stack: stackArr
   };
 }
